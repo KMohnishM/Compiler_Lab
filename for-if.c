@@ -11,168 +11,187 @@
 //F     → id | ( E )
 
 #include<stdio.h>
-#include<stdlib.h>
 #include<string.h>
 #include<ctype.h>
+
 char input[100];
-int i=0;
-int err=0;
+int i = 0;
+int err = 0;
+
+void S();
+void IF();
+void FOR();
+void BLOCK();
 void E();
 void Ed();
 void T();
 void Td();
 void F();
-void IF();
-void FOR();
-void BLOCK();
-void S();
-
 
 void F() {
-	if(isalpha(input[i])) {
-		i++;
-	}
-	else if(isalnum(input[i])) {
-		i++;
-	}
-	else if(input[i]=='(') {
-		i++;
-		E();
-		if(input[i]==')') {
-			i++;
-		}
+    if(err) return;
 
-	}
-	else {
-		printf("%d\n",i);
-		err=1;
-	}
+    if(isalpha(input[i])) {
+        while(isalnum(input[i])) i++;   // identifier
+    }
+    else if(input[i]=='(') {
+        i++;
+        E();
+
+        if(input[i]==')')
+            i++;
+        else
+            err=1;
+    }
+    else {
+        err=1;
+    }
 }
+
 void T() {
-	F();
-	Td();
+    if(err) return;
+    F();
+    Td();
 }
+
 void Td() {
-	if(input[i]=='*') {
-		i++;
-		F();
-		Td();
-	}
-	else if(input[i]=='/') {
-		i++;
-		F();
-		Td();
-	}
-	else {
-		return;
-	}
+    if(err) return;
+
+    if(input[i]=='*') {
+        i++;
+        F();
+        Td();
+    }
+    else if(input[i]=='/') {
+        i++;
+        F();
+        Td();
+    }
 }
+
 void Ed() {
-	if(input[i]=='+') {
-		i++;
-		T();
-		Ed();
-	}
-	else if(input[i]=='-') {
-		i++;
-		T();
-		Ed();
-	}
-	else {
-		return;
-	}
+    if(err) return;
+
+    if(input[i]=='+') {
+        i++;
+        T();
+        Ed();
+    }
+    else if(input[i]=='-') {
+        i++;
+        T();
+        Ed();
+    }
 }
+
 void E() {
-	T();
-	Ed();
+    if(err) return;
+    T();
+    Ed();
 }
+
 void IF() {
-	if(input[i]=='i') {
-		i++;
-		if(input[i]=='f') {
-			i++;
-			if(input[i]=='(') {
-				i++;
-				E();
-				if(input[i]==')') {
-					i++;
-					S();
-				}
-				else err=1;
+    if(err) return;
 
-			}
-			else err=1;
-		}
-	}
+    if(input[i]=='i' && input[i+1]=='f') {
+        i += 2;
 
+        if(input[i]=='(') {
+            i++;
+            E();
+
+            if(input[i]==')') {
+                i++;
+                S();
+            }
+            else err=1;
+        }
+        else err=1;
+    }
 }
 
 void FOR() {
+    if(err) return;
 
-	if(input[i]=='f') {
-		i++;
-		if(input[i]=='o') {
-			i++;
-			if(input[i]=='r') {
-				i++;
-				IF();
-				if(input[i]=='(') {
-					i++;
-					E();
-					if(input[i]==';') {
-						i++;
-						E();
-						if(input[i]==';') {
-							i++;
-							E();
-							if(input[i]==')') {
-								i++;
-								S();
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-};
+    if(input[i]=='f' && input[i+1]=='o' && input[i+2]=='r') {
+        i += 3;
+
+        if(input[i]=='(') {
+            i++;
+
+            E();
+            if(input[i]==';') {
+                i++;
+
+                E();
+                if(input[i]==';') {
+                    i++;
+
+                    E();
+                    if(input[i]==')') {
+                        i++;
+                        S();
+                    }
+                    else err=1;
+                }
+                else err=1;
+            }
+            else err=1;
+        }
+        else err=1;
+    }
+}
 
 void BLOCK() {
-	if(input[i]=='{') {
-		i++;
-		while(input[i]!='}'&&input[i]!='\0') {
-			S();
-		}
+    if(err) return;
 
-		if(input[i]=='}') {
-			i++;
-		}
-	}
+    if(input[i]=='{') {
+        i++;
+
+        while(input[i] != '}' && input[i] != '\0') {
+            S();
+        }
+
+        if(input[i]=='}')
+            i++;
+        else
+            err=1;
+    }
 }
+
 void S() {
-	if(input[i]=='i'&&input[i+1]=='f') {
-		IF();
-	}
-	else if(input[i]=='f'&&input[i+1]=='o'&&input[i+2]=='r') {
-		FOR();
-	}
-	else if(input[i]=='{') {
-		BLOCK();
-	}
-	else {
-		E();
-		if(input[i]==';') {
-			i++;
-		}
-	}
+    if(err) return;
+
+    if(input[i]=='i' && input[i+1]=='f') {
+        IF();
+    }
+    else if(input[i]=='f' && input[i+1]=='o' && input[i+2]=='r') {
+        FOR();
+    }
+    else if(input[i]=='{') {
+        BLOCK();
+    }
+    else {
+        E();
+
+        if(input[i]==';')
+            i++;
+        else
+            err=1;
+    }
 }
+
 int main() {
-	scanf("%s",input);
-	S();
-	if(i==strlen(input)&&err==0) {
-		printf("Valid Expression");
-	}
-	else {
-		printf("Invalid Expression");
-	}
+
+    printf("Enter input: ");
+    scanf("%s", input);
+
+    S();
+
+    if(i==strlen(input) && err==0)
+        printf("Valid Expression\n");
+    else
+        printf("Invalid Expression\n");
+
+    return 0;
 }
