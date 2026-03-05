@@ -1,14 +1,13 @@
-//Parsing For and If 
-//S     → IF | FOR | BLOCK | E ;
-//IF    → if ( E ) S
-//FOR   → for IF ( E ; E ; E ) S
-//BLOCK → { SLIST }
-//SLIST → S SLIST | ε
-//E     → T Ed
-//Ed    → + T Ed | - T Ed | ε
-//T     → F Td
-//Td    → * F Td | / F Td | ε
-//F     → id | ( E )
+// S     → IF | FOR | BLOCK | E ;
+// IF    → if ( E ) S
+// FOR   → for ( E ; E ; E ) S
+// BLOCK → { SLIST }
+// SLIST → S SLIST | ε
+// E     → T Ed
+// Ed    → + T Ed | - T Ed | ε
+// T     → F Td
+// Td    → * F Td | / F Td | ε
+// F     → id | ( E )
 
 #include<stdio.h>
 #include<string.h>
