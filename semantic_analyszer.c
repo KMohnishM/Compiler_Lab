@@ -3,9 +3,8 @@
 // T → T1 * F T.val = T1.val * F.val
 // T → F T.val = F.val
 // F → ( E ) F.val = E.val
-// F → id
+// F → id F.val = id.lexval
 
-F.val = id.lexval
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
