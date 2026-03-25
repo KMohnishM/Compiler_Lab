@@ -1,9 +1,9 @@
-E → E1 + T E.val = E1.val + T.val
-E → T E.val = T.val
-T → T1 * F T.val = T1.val * F.val
-T → F T.val = F.val
-F → ( E ) F.val = E.val
-F → id
+// E → E1 + T E.val = E1.val + T.val
+// E → T E.val = T.val
+// T → T1 * F T.val = T1.val * F.val
+// T → F T.val = F.val
+// F → ( E ) F.val = E.val
+// F → id
 
 F.val = id.lexval
 #include <stdio.h>
